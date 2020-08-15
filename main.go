@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
+	"github.com/joho/godotenv"
 	"google.golang.org/api/googleapi/transport"
 	"google.golang.org/api/youtube/v3"
 )
@@ -15,6 +17,15 @@ const OKAYU_CHANNEL_ID = "UCvaTdHTWBGv3MKj3KVqJVCw"
 const UNKO_CHANNEL_ID = "UCx1nAvtVDIsaGmCMSe8ofsQ"
 
 func main() {
+	//.env ファイルからAPI_KEYを取得
+	err := godotenv.Load("./.env")
+	if err != nil {
+		log.Fatalf("failed loading .env: %v", err)
+		return
+	}
+
+	API_KEY := os.Getenv("API_KEY")
+
 	client := &http.Client{
 		Transport: &transport.APIKey{Key: API_KEY},
 	}
