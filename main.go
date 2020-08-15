@@ -11,7 +11,6 @@ import (
 	"google.golang.org/api/youtube/v3"
 )
 
-const API_KEY = "AIzaSyDk4VHVENR1IedMhACYJZjJRyf_KMRj11g"
 const COCO_CHANNEL_ID = "UCS9uQI-jC3DE0L4IpXyvr6w"
 const OKAYU_CHANNEL_ID = "UCvaTdHTWBGv3MKj3KVqJVCw"
 const UNKO_CHANNEL_ID = "UCx1nAvtVDIsaGmCMSe8ofsQ"
