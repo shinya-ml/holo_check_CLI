@@ -84,12 +84,13 @@ func main() {
 	}
 }
 
-func PrintSearchResults(searchResults []*model.SearchResult) string {
-	var resultTable bytes.Buffer
-	resultTable.WriteString("--------------------------------------\n")
-	resultTable.WriteString(" | owner name |   title    |  status  |\n")
-	resultTable.WriteString(" |------------+------------+----------|\n")
-	resultTable.WriteString(" |  湊あくあ  | テスト配信 | upcoming |\n")
-	resultTable.WriteString(" |------------+------------+----------|")
-	return resultTable.String()
+func FormatSearchResults(searchResults []*model.SearchResult) string {
+
+	var out bytes.Buffer
+	for _, searchResult := range searchResults {
+		out.WriteString("Target: " + searchResult.Owner + "\n")
+		out.WriteString("    " + searchResult.LiveStatus + ": " + searchResult.Title + "\n")
+	}
+
+	return out.String()
 }
