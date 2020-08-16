@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bytes"
+	"flag"
 	"fmt"
+	"holo_check_CLI/model"
 	"log"
 	"net/http"
 	"os"
@@ -40,10 +43,15 @@ var CHANNEL_ID_LIST = map[string]string{
 	"角巻わため":      "UCqm3BQLlJfvkTsX_hvm0UmA",
 	"常闇トワ":       "UC1uv2Oq6kNxgATlCiez59hw",
 	"姫森ルーナ":      "UCa9Y57gfeY0Zro_noHRVrnw",
-	"うんこちゃん":     "UCx1nAvtVDIsaGmCMSe8ofsQ",
 }
 
 func main() {
+	// command line arguments
+	var (
+		target_name = flag.String("name", "", "Name of target channel")
+	)
+	flag.Parse()
+
 	//.env ファイルからAPI_KEYを取得
 	err := godotenv.Load("./.env")
 	if err != nil {
@@ -63,20 +71,26 @@ func main() {
 	}
 
 	part := []string{"snippet"}
-	// query := "channelId=UCx1nAvtVDIsaGmCMSe8ofsQ"
-	// query := "The Chemical Brothers - Go"
-	for channelName, channelId := range CHANNEL_ID_LIST {
-		call := service.Search.List(part).ChannelId(channelId).MaxResults(1).Order("date")
-		resp, _ := call.Do()
-		fmt.Println(resp)
-		if resp != nil {
-			for _, item := range resp.Items {
-				fmt.Printf("%s: %v\n", channelName, item.Snippet.LiveBroadcastContent)
-				fmt.Println(item.Snippet.Title)
-			}
-		} else {
-			fmt.Printf("%s: no items\n", channelName)
+	call := service.Search.List(part).ChannelId(*target_name).MaxResults(3).Order("date")
+	resp, err := call.Do()
+	if err != nil {
+		log.Fatalf("failed query: %v", err)
+	}
+	if resp != nil {
+		for _, item := range resp.Items {
+			fmt.Printf("%s: %v\n", *target_name, item.Snippet.LiveBroadcastContent)
+			fmt.Printf("\t%v\n", item.Snippet.Title)
 		}
 	}
+}
 
+func FormatSearchResults(searchResults []*model.SearchResult) string {
+
+	var out bytes.Buffer
+	for _, searchResult := range searchResults {
+		out.WriteString("Target: " + searchResult.Owner + "\n")
+		out.WriteString("    " + searchResult.LiveStatus + ": " + searchResult.Title + "\n")
+	}
+
+	return out.String()
 }
