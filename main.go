@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
+	"holo_check_CLI/model"
 	"log"
 	"net/http"
 	"os"
@@ -80,20 +82,14 @@ func main() {
 			fmt.Printf("\t%v\n", item.Snippet.Title)
 		}
 	}
-	// query := "channelId=UCx1nAvtVDIsaGmCMSe8ofsQ"
-	// query := "The Chemical Brothers - Go"
-	// for channelName, channelId := range CHANNEL_ID_LIST {
-	// 	call := service.Search.List(part).ChannelId(channelId).MaxResults(1).Order("date")
-	// 	resp, _ := call.Do()
-	// 	fmt.Println(resp)
-	// 	if resp != nil {
-	// 		for _, item := range resp.Items {
-	// 			fmt.Printf("%s: %v\n", channelName, item.Snippet.LiveBroadcastContent)
-	// 			fmt.Println(item.Snippet.Title)
-	// 		}
-	// 	} else {
-	// 		fmt.Printf("%s: no items\n", channelName)
-	// 	}
-	// }
+}
 
+func PrintSearchResults(searchResults []*model.SearchResult) string {
+	var resultTable bytes.Buffer
+	resultTable.WriteString("--------------------------------------\n")
+	resultTable.WriteString(" | owner name |   title    |  status  |\n")
+	resultTable.WriteString(" |------------+------------+----------|\n")
+	resultTable.WriteString(" |  湊あくあ  | テスト配信 | upcoming |\n")
+	resultTable.WriteString(" |------------+------------+----------|")
+	return resultTable.String()
 }
