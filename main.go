@@ -49,6 +49,7 @@ func main() {
 	// command line arguments
 	var (
 		target_name = flag.String("name", "", "Name of target channel")
+		// status      = flag.String("status", "", "Status of video")
 	)
 	flag.Parse()
 
@@ -71,16 +72,14 @@ func main() {
 	}
 
 	part := []string{"snippet"}
-	call := service.Search.List(part).ChannelId(*target_name).MaxResults(3).Order("date")
+	call := service.Search.List(part).ChannelId(CHANNEL_ID_LIST[*target_name]).MaxResults(2).Order("date")
 	resp, err := call.Do()
 	if err != nil {
 		log.Fatalf("failed query: %v", err)
 	}
 	if resp != nil {
-		for _, item := range resp.Items {
-			fmt.Printf("%s: %v\n", *target_name, item.Snippet.LiveBroadcastContent)
-			fmt.Printf("\t%v\n", item.Snippet.Title)
-		}
+		searchResults := model.BindSearchResults(*target_name, resp.Items)
+		_, err = fmt.Fprintf(os.Stdout, FormatSearchResults(searchResults))
 	}
 }
 
