@@ -49,7 +49,7 @@ func main() {
 	// command line arguments
 	var (
 		target_name = flag.String("name", "", "Name of target channel")
-		// status      = flag.String("status", "", "Status of video")
+		status      = flag.String("status", "all", "Status of video")
 	)
 	flag.Parse()
 
@@ -78,7 +78,7 @@ func main() {
 		log.Fatalf("failed query: %v", err)
 	}
 	if resp != nil {
-		searchResults := model.BindSearchResults(*target_name, resp.Items)
+		searchResults := model.BindSearchResults(*target_name, *status, resp.Items)
 		_, err = fmt.Fprintf(os.Stdout, FormatSearchResults(searchResults))
 	}
 }
