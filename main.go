@@ -71,8 +71,10 @@ func main() {
 		log.Fatalf("Error creating new youtube client: %v", err)
 	}
 
+	targetChannelId := CHANNEL_ID_LIST[*target_name]
 	part := []string{"snippet"}
-	call := service.Search.List(part).ChannelId(CHANNEL_ID_LIST[*target_name]).MaxResults(2).Order("date")
+
+	call := service.Search.List(part).ChannelId(targetChannelId).MaxResults(2).Order("date")
 	resp, err := call.Do()
 	if err != nil {
 		log.Fatalf("failed query: %v", err)
