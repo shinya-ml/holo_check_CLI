@@ -6,10 +6,16 @@ type SearchResult struct {
 	Owner      string
 	Title      string
 	LiveStatus string
+	URL        string
 }
 
-func NewSearchResult(owner string) *SearchResult {
-	return &SearchResult{Owner: owner}
+func NewSearchResult(owner string, item *youtube.SearchResult) *SearchResult {
+	return &SearchResult{
+		Owner:      owner,
+		Title:      item.Snippet.Title,
+		LiveStatus: item.Snippet.LiveBroadcastContent,
+		URL:        "https://youtube.com/watch?v=" + item.Id.VideoId,
+	}
 }
 
 func BindSearchResults(name string, status string, items []*youtube.SearchResult) []*SearchResult {
@@ -17,32 +23,20 @@ func BindSearchResults(name string, status string, items []*youtube.SearchResult
 	switch status {
 	case "all":
 		for _, item := range items {
-			sr := &SearchResult{
-				Owner:      name,
-				Title:      item.Snippet.Title,
-				LiveStatus: item.Snippet.LiveBroadcastContent,
-			}
+			sr := NewSearchResult(name, item)
 			searchResults = append(searchResults, sr)
 		}
 	case "live":
 		for _, item := range items {
 			if item.Snippet.LiveBroadcastContent == "live" {
-				sr := &SearchResult{
-					Owner:      name,
-					Title:      item.Snippet.Title,
-					LiveStatus: item.Snippet.LiveBroadcastContent,
-				}
+				sr := NewSearchResult(name, item)
 				searchResults = append(searchResults, sr)
 			}
 		}
 	case "upcoming":
 		for _, item := range items {
 			if item.Snippet.LiveBroadcastContent == "upcoming" {
-				sr := &SearchResult{
-					Owner:      name,
-					Title:      item.Snippet.Title,
-					LiveStatus: item.Snippet.LiveBroadcastContent,
-				}
+				sr := NewSearchResult(name, item)
 				searchResults = append(searchResults, sr)
 			}
 		}

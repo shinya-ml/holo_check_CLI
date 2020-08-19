@@ -12,33 +12,39 @@ func TestFormatSearchResults(t *testing.T) {
 	}{
 		{
 			[]*model.SearchResult{
-				&model.SearchResult{
+				{
 					Owner:      "湊あくあ",
 					Title:      "テスト配信",
 					LiveStatus: "upcoming",
+					URL:        "https://youtube.com/watch?v=hoge",
 				},
 			},
 			`Target: 湊あくあ
     upcoming: テスト配信
+    URL: https://youtube.com/watch?v=hoge
 `,
 		},
 		{
 			[]*model.SearchResult{
-				&model.SearchResult{
+				{
 					Owner:      "湊あくあ",
 					Title:      "テスト配信",
 					LiveStatus: "upcoming",
+					URL:        "https://youtube.com/watch?v=hoge",
 				},
-				&model.SearchResult{
+				{
 					Owner:      "桐生ココ",
 					Title:      "【#桐生ココ】地獄耐久に備える！まったり準備作業雑談【#とまらないARK】",
 					LiveStatus: "live",
+					URL:        "https://youtube.com/watch?v=hoge",
 				},
 			},
 			`Target: 湊あくあ
     upcoming: テスト配信
+    URL: https://youtube.com/watch?v=hoge
 Target: 桐生ココ
     live: 【#桐生ココ】地獄耐久に備える！まったり準備作業雑談【#とまらないARK】
+    URL: https://youtube.com/watch?v=hoge
 `,
 		},
 	}
