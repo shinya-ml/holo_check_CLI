@@ -91,6 +91,7 @@ func FormatSearchResults(searchResults []*model.SearchResult) string {
 	for _, searchResult := range searchResults {
 		out.WriteString("Target: " + searchResult.Owner + "\n")
 		out.WriteString("    " + searchResult.LiveStatus + ": " + searchResult.Title + "\n")
+		out.WriteString("    URL: " + searchResult.URL + "\n")
 	}
 
 	return out.String()
